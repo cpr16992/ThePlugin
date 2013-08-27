@@ -3,7 +3,12 @@ import ij.gui.GenericDialog;
 import ij.plugin.frame.PlugInFrame;
 
 import java.awt.Checkbox;
+import java.awt.TextField;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.util.Vector;
+
+import javax.swing.JTextField;
 
 public class Atlas_Selector extends PlugInFrame{
 	/**
@@ -54,7 +59,16 @@ public class Atlas_Selector extends PlugInFrame{
 				}
 				else
 				{
-
+					GenericDialog gd5 = new GenericDialog("Tags to be selected: ");
+					//// ReadXMLFile.main(null);
+					//// String[] AllenTagNames = ReadXMLFile.getTags();
+					gd5.addMessage("Please select the tags you are interested for visualization");
+					//// gd5.addChoice("Structures", AllenTagNames, "root");
+					gd5.addStringField("", "root");
+					Vector sfs = gd5.getStringFields();
+					TextField sf = (TextField)sfs.get(0);
+					sf.addKeyListener(new KeyTypedManager());
+					gd5.showDialog();
 				}
 			}
 			else if (dos)
@@ -92,6 +106,28 @@ public class Atlas_Selector extends PlugInFrame{
 		gd.showDialog();
 	}
 
+	
+	class KeyTypedManager implements KeyListener {
+
+		@Override
+		public void keyPressed(KeyEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void keyReleased(KeyEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void keyTyped(KeyEvent e) {
+			// TODO Auto-generated method stub
+			
+			System.out.println("--> "+e.getKeyChar());
+		}}
+	
 }
 
 

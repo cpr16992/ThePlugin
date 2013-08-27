@@ -2,10 +2,12 @@
 
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.DocumentBuilder;
+
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.Node;
 import org.w3c.dom.Element;
+
 import java.io.File;
 import java.util.ArrayList;
 
@@ -31,12 +33,6 @@ public class ReadXMLFile {
 			Node nNode = nList.item(temp);
 			Structure struct = FillFields(nNode);
 			tags.add(struct);
-			for (Structure str: tags){
-				PrintNames(str);
-			}
-			for (Structure str: tagswithoutlevel){
-				PrintNames(str);
-			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -71,5 +67,21 @@ public class ReadXMLFile {
 	}
 	public static void PrintNames (Structure str) {
 		System.out.println(str.getName());
+	}
+	public static String[] getTags(){
+		String[] AllenTagName = new String[tagswithoutlevel.size()];
+		for (int i = 0; i < tagswithoutlevel.size(); i++)
+		{
+			AllenTagName[i] = tagswithoutlevel.get(i).getName();
+		}
+		return AllenTagName;
+	}
+	public static void showTags (){
+		for (Structure str: tags){
+			PrintNames(str);
+		}
+		for (Structure str: tagswithoutlevel){
+			PrintNames(str);
+		}
 	}
 }
