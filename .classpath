@@ -9,5 +9,6 @@
 	<classpathentry kind="lib" path="C:/Users/carlos/Downloads/jaxb-ri-20110601/lib/jaxb-impl.jar"/>
 	<classpathentry kind="lib" path="C:/Users/carlos/Downloads/jaxb-ri-20110601/lib/jaxb-xjc.jar"/>
 	<classpathentry kind="lib" path="C:/Users/carlos/Downloads/jaxb-ri-20110601/lib/jsr173_1.0_api.jar"/>
+	<classpathentry kind="lib" path="C:/Users/carlos/Downloads/sqlitejdbc-v056.jar"/>
 	<classpathentry kind="output" path="plugins"/>
 </classpath>

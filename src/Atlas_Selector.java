@@ -8,8 +8,6 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.Vector;
 
-import javax.swing.JTextField;
-
 public class Atlas_Selector extends PlugInFrame{
 	/**
 	 * 
@@ -65,7 +63,7 @@ public class Atlas_Selector extends PlugInFrame{
 					gd5.addMessage("Please select the tags you are interested for visualization");
 					//// gd5.addChoice("Structures", AllenTagNames, "root");
 					gd5.addStringField("", "root");
-					Vector sfs = gd5.getStringFields();
+					Vector<?> sfs = gd5.getStringFields();
 					TextField sf = (TextField)sfs.get(0);
 					sf.addKeyListener(new KeyTypedManager());
 					gd5.showDialog();
