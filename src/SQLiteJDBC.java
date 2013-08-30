@@ -8,24 +8,14 @@ public class SQLiteJDBC
     Statement stmt = null;
     try {
       Class.forName("org.sqlite.JDBC");
-      c = BaseDeDatos.conectarA("C:\\Users\\carlos\\Desktop\\test.db3" );
+      c = DriverManager.getConnection("jdbc:sqlite:C:/Users/carlos/Desktop/nocrypt.db3");
       c.setAutoCommit(false);
       System.out.println("Opened database successfully");
-
-      stmt = c.prepareStatement("SELECT * FROM tbVG_ABA_genes_matrix;");
-      
-      ResultSet rs = stmt.getResultSet();
+      stmt = c.createStatement();
+      ResultSet rs = stmt.executeQuery("SELECT * FROM tbVG_ABA_gene_array_matrix WHERE ;");
       while ( rs.next() ) {
-         int id = rs.getInt("id");
-         String  name = rs.getString("name");
-         int age  = rs.getInt("age");
-         String  address = rs.getString("address");
-         float salary = rs.getFloat("salary");
-         System.out.println( "ID = " + id );
-         System.out.println( "NAME = " + name );
-         System.out.println( "AGE = " + age );
-         System.out.println( "ADDRESS = " + address );
-         System.out.println( "SALARY = " + salary );
+         int aba_id = rs.getInt("aba_id");
+         System.out.println( "ABA_ID = " + aba_id );
          System.out.println();
       }
       rs.close();
