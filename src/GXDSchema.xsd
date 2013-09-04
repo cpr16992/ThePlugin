@@ -1,0 +1,26 @@
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="DATA">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="ROW" maxOccurs="unbounded" minOccurs="0">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element type="xs:short" name="_Structure_key"/>
+              <xs:element type="xs:short" name="_Parent_key"/>
+              <xs:element type="xs:short" name="_StructureName_key"/>
+              <xs:element type="xs:byte" name="_Stage_key"/>
+              <xs:element type="xs:byte" name="edinburghKey"/>
+              <xs:element type="xs:string" name="printName"/>
+              <xs:element type="xs:byte" name="treeDepth"/>
+              <xs:element type="xs:byte" name="printStop"/>
+              <xs:element type="xs:short" name="topoSort"/>
+              <xs:element type="xs:string" name="structureNote"/>
+              <xs:element type="xs:date" name="creation_date"/>
+              <xs:element type="xs:date" name="modification_date"/>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

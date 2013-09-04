@@ -80,8 +80,8 @@ public class ReadXMLFile {
 		for (Structure str: tags){
 			PrintNames(str);
 		}
-		for (Structure str: tagswithoutlevel){
+		/*for (Structure str: tagswithoutlevel){
 			PrintNames(str);
-		}
+		}*/
 	}
 }
