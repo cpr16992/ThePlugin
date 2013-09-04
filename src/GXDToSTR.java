@@ -13,7 +13,6 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 public class GXDToSTR {
-	//private static ArrayList<Structure> tags = new ArrayList<Structure>();
 	private static ArrayList<Structure> tagswithoutlevel = new ArrayList<Structure>();
 
 	public static void main(String argv[]) {
@@ -33,23 +32,11 @@ public class GXDToSTR {
 			for (int temp = 0; temp < nList.getLength(); temp++)
 			{
 				Node nNode = nList.item(temp);
-				/*Structure struct =*/ FillFields(nNode);
+				FillFields(nNode);
 			}
-			/*for (int i = 0; i < tagswithoutlevel.size(); i++){
-				String ActualParentKey = tagswithoutlevel.get(i).getParentKey();
-				for(int counter = i; counter < tagswithoutlevel.size(); counter++)
-				{
-					if(tagswithoutlevel.get(counter).isChild(ActualParentKey))
-					{
-						tagswithoutlevel.get(i).addChild(tagswithoutlevel.get(counter));
-					}
-				//PrintNames(str);
-				}
-			}*/
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		PrintNames();
 	}
 	public static void FillFields(Node nNode) {
 		Structure tag = new Structure();
