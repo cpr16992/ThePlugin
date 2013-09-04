@@ -70,10 +70,7 @@ public class Structure {
     protected List<Structure> children= new ArrayList<Structure>();
     protected String graylevel;
     //
-	protected String structureKey;
-	protected String parentKey;
 	protected String structureNameKey;
-	protected String stageKey;
 	protected String edinburghKey;
 	protected String treeDepth;
 	protected String printStop;
@@ -320,38 +317,6 @@ public class Structure {
     
     
 	/**
-	 * Gets the value of the structureKey property.
-	 * 
-	 */
-	public String getStructureKey() {
-		return structureKey;
-	}
-
-	/**
-	 * Sets the value of the structureKey property.
-	 * 
-	 */
-	public void setStructureKey(String value) {
-		this.structureKey = value;
-	}
-
-	/**
-	 * Gets the value of the parentKey property.
-	 * 
-	 */
-	public String getParentKey() {
-		return parentKey;
-	}
-
-	/**
-	 * Sets the value of the parentKey property.
-	 * 
-	 */
-	public void setParentKey(String value) {
-		this.parentKey = value;
-	}
-
-	/**
 	 * Gets the value of the structureNameKey property.
 	 * 
 	 */
@@ -365,22 +330,6 @@ public class Structure {
 	 */
 	public void setStructureNameKey(String value) {
 		this.structureNameKey = value;
-	}
-
-	/**
-	 * Gets the value of the stageKey property.
-	 * 
-	 */
-	public String getStageKey() {
-		return stageKey;
-	}
-
-	/**
-	 * Sets the value of the stageKey property.
-	 * 
-	 */
-	public void setStageKey(String value) {
-		this.stageKey = value;
 	}
 
 	/**
@@ -518,9 +467,9 @@ public class Structure {
 	public void setModificationDate(XMLGregorianCalendar value) {
 		this.modificationDate = value;
 	}
-	public boolean isChild(String parentName)
+	public boolean isChild(Structure parent)
 	{
-		if(getStructureKey().equals(parentName))
+		if(getParentStructureId().equals(parent.getId()))
 		{
 			return true;
 		}

@@ -10,10 +10,10 @@ import org.w3c.dom.Element;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
 
 public class ReadXMLFile {
-	private static ArrayList<Structure> tags = new ArrayList<Structure>();
-	private static ArrayList<Structure> tagswithoutlevel = new ArrayList<Structure>();
+	private static ArrayList<Structure> AllenTags = new ArrayList<Structure>();
 
 	public static void main(String argv[]) {
 
@@ -29,15 +29,18 @@ public class ReadXMLFile {
 			Document doc = dBuilder.parse(fXmlFile);
 			doc.getDocumentElement().normalize();
 			NodeList nList = doc.getElementsByTagName("structure");
-			int temp = 0;
-			Node nNode = nList.item(temp);
-			Structure struct = FillFields(nNode);
-			tags.add(struct);
+			for (int t = 0; t < nList.getLength(); t++) {
+				Node nNode = nList.item(t);
+				FillFields(nNode);
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		System.out.println(AllenTags.size());
+		//PrintNames();
+		showKinder();
 	}
-	public static Structure FillFields(Node nNode) {
+	public static void FillFields(Node nNode) {
 		Structure tag = new Structure();
 		Element eElement = (Element) nNode;
 		tag.setId((eElement.getElementsByTagName("id").item(0).getTextContent()));
@@ -50,38 +53,46 @@ public class ReadXMLFile {
 		tag.setStLevel((eElement.getElementsByTagName("st-level").item(0).getTextContent()));
 		tag.setHemisphereId((eElement.getElementsByTagName("hemisphere-id").item(0).getTextContent()));
 		tag.setParentStructureId((eElement.getElementsByTagName("parent-structure-id").item(0).getTextContent()));
-		NodeList children = eElement.getElementsByTagName("children");
-		if (children.getLength() >= 1)
-		{
-			Node strNode = children.item(0);
-			Element fElement = (Element) strNode;
-			NodeList ChildStructures = fElement.getElementsByTagName("structure");
-			for (int temp = 0; temp < ChildStructures.getLength(); temp++) {
-				Node ChildStructuresN = ChildStructures.item(temp);
-				Structure Ch = FillFields(ChildStructuresN);
-				tag.addChild(Ch);
+		AllenTags.add(tag);
+		for (Structure str : AllenTags) {
+			if (tag.isChild(str)) {
+				str.addChild(tag);
 			}
 		}
-		tagswithoutlevel.add(tag);
-		return tag;
+	}
+
+	public static void PrintNames() {
+		for (Structure str : AllenTags) {
+			System.out.println(str.getName());
+		}
+	}
+	public static void SortKinder(Structure parent){
+		for (Structure kind : AllenTags)
+		{
+			if (kind.isChild(parent)) {
+				AllenTags.add(kind);
+				SortKinder(kind);
+			}
+		}
 	}
 	public static void PrintNames (Structure str) {
 		System.out.println(str.getName());
 	}
 	public static String[] getTags(){
-		String[] AllenTagName = new String[tagswithoutlevel.size()];
-		for (int i = 0; i < tagswithoutlevel.size(); i++)
+		String[] AllenTagName = new String[AllenTags.size()];
+		for (int i = 0; i < AllenTags.size(); i++)
 		{
-			AllenTagName[i] = tagswithoutlevel.get(i).getName();
+			AllenTagName[i] = AllenTags.get(i).getName();
 		}
 		return AllenTagName;
 	}
-	public static void showTags (){
-		for (Structure str: tags){
-			PrintNames(str);
-		}
-		/*for (Structure str: tagswithoutlevel){
-			PrintNames(str);
-		}*/
+	public static void showKinder (){
+		Structure root = AllenTags.get(0);
+		List<Structure> lista = root.getChildren();
+			for (Structure kind: lista)
+			{
+				System.out.println(kind.getName());
+			};
 	}
+
 }
