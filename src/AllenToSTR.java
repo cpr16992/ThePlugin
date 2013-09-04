@@ -12,7 +12,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ReadXMLFile {
+public class AllenToSTR {
 	private static ArrayList<Structure> AllenTags = new ArrayList<Structure>();
 
 	public static void main(String argv[]) {
