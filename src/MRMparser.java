@@ -1,8 +1,14 @@
 
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 public class MRMparser extends ArrayList<Structure>
 {
@@ -23,21 +29,18 @@ public class MRMparser extends ArrayList<Structure>
 		 */
 		try
 		{
-			Scanner file = new Scanner(new File(fileName));
-			while (file.hasNextLine())
+			String test = readFile(fileName);
+			String[] arr = test.split("\t");
+			System.out.println(arr[0]);
+			for(int a = 0; a <= arr.length; a = a + 4)
 			{
 				Structure str = new Structure();
-				num = file.nextInt();
-				str.setId(String.valueOf(num));
-				String colour = file.nextLine();
-				str.setColorHexTriplet(colour);	
-				String Acron = file.nextLine();
-				str.setAcronym(Acron);
-				String tag = file.nextLine();
-				str.setName(tag);
+				str.setId(arr[a]);
+				str.setColorHexTriplet(arr[a+1]);	
+				str.setAcronym(arr[a+2]);
+				str.setName(arr[a+3]);
 				MRMTags.add(str);
 			}
-			file.close();
 		}
 		catch (Exception e)
 		{
@@ -51,15 +54,26 @@ public class MRMparser extends ArrayList<Structure>
 	{
 		for (int i = 0; i <= MRMTags.size(); i++)
 		{
-			System.out.println(MRMTags.get(i).getId());
-			System.out.println(MRMTags.get(i).getColorHexTriplet());
-			System.out.println(MRMTags.get(i).getAcronym());
 			System.out.println(MRMTags.get(i).getName());
 		}
 	}
 
+	 private String readFile( String file ) throws IOException {
+		    BufferedReader reader = new BufferedReader( new FileReader (file));
+		    String         line = null;
+		    StringBuilder  stringBuilder = new StringBuilder();
+		    String         ls = System.getProperty("line.separator");
+
+		    while( ( line = reader.readLine() ) != null ) {
+		        stringBuilder.append( line );
+		        stringBuilder.append( ls );
+		    }
+
+		    return stringBuilder.toString();
+		}
+	 
 	public static void main(String[] args){
 		 MRMparser etiquetas = new MRMparser("C:\\Documents and Settings\\tfg-biig\\Desktop\\MRM.txt");
-		 etiquetas.printTags();
+		 //etiquetas.printTags();
 	}
 }
