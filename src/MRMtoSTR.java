@@ -5,11 +5,11 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class MRMparser extends ArrayList<Structure>
+public class MRMtoSTR extends ArrayList<Structure>
 {
 	private static final long serialVersionUID = 1L;
 	private static ArrayList<Structure> MRMTags = new ArrayList<Structure>();
-	public MRMparser(String fileName)
+	public MRMtoSTR(String fileName)
 	{
 		/*
 		 * protected String id;
@@ -61,7 +61,7 @@ public class MRMparser extends ArrayList<Structure>
 	}
 	 
 	public static void main(String[] args){
-		 MRMparser etiquetas = new MRMparser("C:\\Documents and Settings\\tfg-biig\\Desktop\\MRM.txt");
+		 MRMtoSTR etiquetas = new MRMtoSTR("C:\\Documents and Settings\\tfg-biig\\Desktop\\MRM.txt");
 		 etiquetas.printTags();
 	}
 }
