@@ -63,6 +63,9 @@ public class Structure {
     protected String acronym;
     protected String name;
     protected String colorHexTriplet;
+    protected String colorR;
+    protected String colorG;
+    protected String colorB;
     protected String graphOrder;
     protected String stLevel;
     protected String hemisphereId;
@@ -478,5 +481,74 @@ public class Structure {
 			return false;
 		}
 	}
+	/**
+     * Gets the value of the colorHexTriplet property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getColorB() {
+        return colorB;
+    }
+
+    /**
+     * Sets the value of the colorHexTriplet property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setColorB(String value) {
+        this.colorB = value;
+    }
+    /**
+     * Gets the value of the colorHexTriplet property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getColorGt() {
+        return colorG;
+    }
+
+    /**
+     * Sets the value of the colorHexTriplet property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setColorG(String value) {
+        this.colorG = value;
+    }
+    /**
+     * Gets the value of the colorHexTriplet property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getColorR() {
+        return colorR;
+    }
+
+    /**
+     * Sets the value of the colorHexTriplet property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setColorR(String value) {
+        this.colorR = value;
+    }
 
 }

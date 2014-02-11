@@ -12,14 +12,14 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MDAToSTR {
-	private static ArrayList<Structure> MDATags = new ArrayList<Structure>();
+public class WaxholmToSTR {
+	private static ArrayList<Structure> WaxholmTags = new ArrayList<Structure>();
 
 	public static void main(String argv[]) {
 
 		try {
 
-			File fXmlFile = new File("F:\\PFC\\Atlas LONI MDA\\Atlas LONI MDA\\MDA.xml");
+			File fXmlFile = new File("F:\\PFC\\Atlas Waxholm\\CLabels.atlas (1).xml");
 			/* The line above is to be substituted by the path of the file containing the atlas
 			 * In case of an update, change the path by the one containing the latest version of
 			 * the atlas ontology.
@@ -28,33 +28,31 @@ public class MDAToSTR {
 			DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
 			Document doc = dBuilder.parse(fXmlFile);
 			doc.getDocumentElement().normalize();
-			NodeList nList = doc.getElementsByTagName("structure");
-			for (int t = 0; t < nList.getLength(); t++) {
-				Node nNode = nList.item(t);
-				Element fElement = (Element) nNode;
-				NodeList mList = fElement.getElementsByTagName("label");
-				for (int u = 0; u < mList.getLength(); u++)
-				{
-					Node mNode = mList.item(u);
-					FillFields(mNode);
-				}
+			NodeList nList = doc.getElementsByTagName("Area");
+			for (int u = 0; u < nList.getLength(); u++)
+			{
+				Node mNode = nList.item(u);
+				FillFields(mNode);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		PrintNames();
-		System.out.println(MDATags.size());
+		System.out.println(WaxholmTags.size());
 		//showKinder();
 	}
 	public static void FillFields(Node nNode) {
 		Structure tag = new Structure();
 		Element eElement = (Element) nNode;
-		tag.setId((eElement.getAttribute("id")));
-		tag.setColorHexTriplet((eElement.getAttribute("color")));
-		tag.setAcronym((eElement.getAttribute("abbreviation")));
+		//Falta la ID, que no sé muy bien como resolver. Quizás sería buena idea poner una ID autoincremental
+		//(consultar ASAP)
 		tag.setName((eElement.getAttribute("name")));
-		MDATags.add(tag);
-		/*for (Structure str : MDATags) {
+		Element gElement = 	(Element) eElement.getElementsByTagName("color").item(0);
+		tag.setColorR((gElement.getAttribute("r")));
+		tag.setColorB((gElement.getAttribute("b")));
+		tag.setColorG((gElement.getAttribute("g")));
+		WaxholmTags.add(tag);
+		/*for (Structure str : WaxholmTags) {
 			if (tag.isChild(str)) {
 				str.addChild(tag);
 			}
@@ -62,15 +60,15 @@ public class MDAToSTR {
 	}
 
 	public static void PrintNames() {
-		for (Structure str : MDATags) {
+		for (Structure str : WaxholmTags) {
 			System.out.println(str.getName());
 		}
 	}
 	public static void SortKinder(Structure parent){
-		for (Structure kind : MDATags)
+		for (Structure kind : WaxholmTags)
 		{
 			if (kind.isChild(parent)) {
-				MDATags.add(kind);
+				WaxholmTags.add(kind);
 				SortKinder(kind);
 			}
 		}
@@ -79,15 +77,15 @@ public class MDAToSTR {
 		System.out.println(str.getName());
 	}
 	public static String[] getTags(){
-		String[] MDATagName = new String[MDATags.size()];
-		for (int i = 0; i < MDATags.size(); i++)
+		String[] WaxholmTagName = new String[WaxholmTags.size()];
+		for (int i = 0; i < WaxholmTags.size(); i++)
 		{
-			MDATagName[i] = MDATags.get(i).getName();
+			WaxholmTagName[i] = WaxholmTags.get(i).getName();
 		}
-		return MDATagName;
+		return WaxholmTagName;
 	}
 	public static void showKinder (){
-		Structure root = MDATags.get(0);
+		Structure root = WaxholmTags.get(0);
 		List<Structure> lista = root.getChildren();
 			for (Structure kind: lista)
 			{

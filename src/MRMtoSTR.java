@@ -61,7 +61,7 @@ public class MRMtoSTR extends ArrayList<Structure>
 	}
 	 
 	public static void main(String[] args){
-		 MRMtoSTR etiquetas = new MRMtoSTR("C:\\Documents and Settings\\tfg-biig\\Desktop\\MRM.txt");
+		 MRMtoSTR etiquetas = new MRMtoSTR("F:\\PFC\\Atlas LONI MRM\\Atlas LONI MRM\\MRM.txt");
 		 etiquetas.printTags();
 	}
 }
