@@ -19,7 +19,7 @@ public class MDAToSTR {
 
 		try {
 
-			File fXmlFile = new File("F:\\PFC\\Atlas LONI MDA\\Atlas LONI MDA\\MDA.xml");
+			File fXmlFile = new File("C:\\Users\\cporras\\Desktop\\Atlases\\Atlas LONI MDA\\Atlas LONI MDA\\MDA.xml");
 			/* The line above is to be substituted by the path of the file containing the atlas
 			 * In case of an update, change the path by the one containing the latest version of
 			 * the atlas ontology.
@@ -36,7 +36,11 @@ public class MDAToSTR {
 				for (int u = 0; u < mList.getLength(); u++)
 				{
 					Node mNode = mList.item(u);
-					FillFields(mNode);
+					nList = doc.getElementsByTagName("order");
+					//if (nNode.getNodeType() == Node.ELEMENT_NODE) {
+					
+						FillFields(mNode);
+					//}
 				}
 			}
 		} catch (Exception e) {
@@ -53,6 +57,12 @@ public class MDAToSTR {
 		tag.setColorHexTriplet((eElement.getAttribute("color")));
 		tag.setAcronym((eElement.getAttribute("abbreviation")));
 		tag.setName((eElement.getAttribute("name")));
+		/*NodeList kList = nNode.getChildNodes();
+		for (int k = 0; k <= kList.getLength(); k++)
+		{
+			Node kNode = kList.item(k);
+			System.out.println(kNode.getParentNode().getNodeName());
+		}*/
 		MDATags.add(tag);
 		/*for (Structure str : MDATags) {
 			if (tag.isChild(str)) {
@@ -89,10 +99,10 @@ public class MDAToSTR {
 	public static void showKinder (){
 		Structure root = MDATags.get(0);
 		List<Structure> lista = root.getChildren();
-			for (Structure kind: lista)
-			{
-				System.out.println(kind.getName());
-			};
+		for (Structure kind: lista)
+		{
+			System.out.println(kind.getName());
+		};
 	}
 
 }

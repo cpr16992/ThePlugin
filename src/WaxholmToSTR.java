@@ -19,7 +19,7 @@ public class WaxholmToSTR {
 
 		try {
 
-			File fXmlFile = new File("F:\\PFC\\Atlas Waxholm\\CLabels.atlas (1).xml");
+			File fXmlFile = new File("C:\\Users\\cporras\\Desktop\\Atlases\\Atlas Waxholm\\CLabels.atlas (1).xml");
 			/* The line above is to be substituted by the path of the file containing the atlas
 			 * In case of an update, change the path by the one containing the latest version of
 			 * the atlas ontology.
