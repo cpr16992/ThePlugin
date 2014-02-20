@@ -435,6 +435,8 @@ public class Structure {
 		return creationDate;
 	}
 
+	
+
 	/**
 	 * Sets the value of the creationDate property.
 	 * 

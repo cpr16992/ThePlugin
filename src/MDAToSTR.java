@@ -14,12 +14,13 @@ import java.util.List;
 
 public class MDAToSTR {
 	private static ArrayList<Structure> MDATags = new ArrayList<Structure>();
+	static Structure tag = new Structure();
 
 	public static void main(String argv[]) {
 
 		try {
 
-			File fXmlFile = new File("C:\\Users\\cporras\\Desktop\\Atlases\\Atlas LONI MDA\\Atlas LONI MDA\\MDA.xml");
+			File fXmlFile = new File("C:\\Documents and Settings\\tfg-biig\\Desktop\\MDA.xml");
 			/* The line above is to be substituted by the path of the file containing the atlas
 			 * In case of an update, change the path by the one containing the latest version of
 			 * the atlas ontology.
@@ -32,47 +33,50 @@ public class MDAToSTR {
 			for (int t = 0; t < nList.getLength(); t++) {
 				Node nNode = nList.item(t);
 				Element fElement = (Element) nNode;
-				NodeList mList = fElement.getElementsByTagName("label");
+				NodeList mList = fElement.getChildNodes();
 				for (int u = 0; u < mList.getLength(); u++)
 				{
 					Node mNode = mList.item(u);
-					nList = doc.getElementsByTagName("order");
-					//if (nNode.getNodeType() == Node.ELEMENT_NODE) {
-					
-						FillFields(mNode);
-					//}
+					FillFields(mNode, tag);
 				}
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		PrintNames();
+		PrintChildren();
 		System.out.println(MDATags.size());
-		//showKinder();
 	}
-	public static void FillFields(Node nNode) {
-		Structure tag = new Structure();
+	public static void FillFields(Node nNode, Structure tag) {		
 		Element eElement = (Element) nNode;
 		tag.setId((eElement.getAttribute("id")));
 		tag.setColorHexTriplet((eElement.getAttribute("color")));
 		tag.setAcronym((eElement.getAttribute("abbreviation")));
 		tag.setName((eElement.getAttribute("name")));
-		/*NodeList kList = nNode.getChildNodes();
-		for (int k = 0; k <= kList.getLength(); k++)
+		if (eElement.hasChildNodes())
 		{
-			Node kNode = kList.item(k);
-			System.out.println(kNode.getParentNode().getNodeName());
-		}*/
-		MDATags.add(tag);
-		/*for (Structure str : MDATags) {
-			if (tag.isChild(str)) {
-				str.addChild(tag);
+			Structure tagchild = new Structure();
+			NodeList kList = eElement.getChildNodes();
+			for (int u = 0; u < kList.getLength(); u++)
+			{
+				Node mNode = kList.item(u);
+				FillFields(mNode, tagchild);
+				tag.addChild(tagchild);
 			}
-		}*/
+		}		
+		MDATags.add(tag);
+		
 	}
 
 	public static void PrintNames() {
 		for (Structure str : MDATags) {
+			System.out.println(str.getName());
+		}
+	}
+	public static void PrintChildren() {
+		List<Structure> Children = MDATags.get(MDATags.size()-1).getChildren();
+		for (Structure str: Children)
+		{
 			System.out.println(str.getName());
 		}
 	}
