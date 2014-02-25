@@ -20,7 +20,7 @@ public class MDAToSTR {
 
 		try {
 
-			File fXmlFile = new File("C:\\Documents and Settings\\tfg-biig\\Desktop\\MDA.xml");
+			File fXmlFile = new File("C:\\Users\\cporras\\Desktop\\Atlases\\Atlas LONI MDA\\Atlas LONI MDA\\MDA.xml");
 			/* The line above is to be substituted by the path of the file containing the atlas
 			 * In case of an update, change the path by the one containing the latest version of
 			 * the atlas ontology.
@@ -44,7 +44,7 @@ public class MDAToSTR {
 			e.printStackTrace();
 		}
 		PrintNames();
-		PrintChildren();
+		//PrintChildren();
 		System.out.println(MDATags.size());
 	}
 	public static void FillFields(Node nNode, Structure tag) {		
@@ -55,17 +55,17 @@ public class MDAToSTR {
 		tag.setName((eElement.getAttribute("name")));
 		if (eElement.hasChildNodes())
 		{
-			Structure tagchild = new Structure();
 			NodeList kList = eElement.getChildNodes();
 			for (int u = 0; u < kList.getLength(); u++)
 			{
+				Structure tagchild = new Structure();
 				Node mNode = kList.item(u);
 				FillFields(mNode, tagchild);
 				tag.addChild(tagchild);
 			}
 		}		
 		MDATags.add(tag);
-		
+
 	}
 
 	public static void PrintNames() {
@@ -74,10 +74,13 @@ public class MDAToSTR {
 		}
 	}
 	public static void PrintChildren() {
-		List<Structure> Children = MDATags.get(MDATags.size()-1).getChildren();
-		for (Structure str: Children)
+		for (int s = 0; s<MDATags.size(); s++)
 		{
-			System.out.println(str.getName());
+			List<Structure> Children = MDATags.get(s).getChildren();
+			for (Structure str: Children)
+			{
+				System.out.println(str.getName());
+			}
 		}
 	}
 	public static void SortKinder(Structure parent){
