@@ -8,7 +8,8 @@ import java.util.ArrayList;
 public class GXDparserOI {
 
 	protected ArrayList<Integer> tagidentifiers;
-	
+	protected static ArrayList<Integer> MGIidentifiers;
+
 	public static void main(String[] args) {
 		ArrayList<Integer> tagidentifiers = new ArrayList<Integer>(); ;
 		int childnumber = 7005;
@@ -26,12 +27,20 @@ public class GXDparserOI {
 					System.out.println(number);
 					bindex++;
 				}
-				
+
 			}
 		} catch (Exception e)
 		{
 			e.printStackTrace();
 		}
+		MGIidentifiers = GXDtoMGIconverter();
+		int c = 0;
+		for (int n : MGIidentifiers)
+		{
+			System.out.println(n);
+			c++;
+		}
+		System.out.println(c);
 	}
 	public static int[] getchildren(int father)
 	{
@@ -62,5 +71,24 @@ public class GXDparserOI {
 			e.printStackTrace();
 		}
 		return children;
+	}
+
+	public static ArrayList<Integer> GXDtoMGIconverter()
+	{
+		ArrayList<Integer> MGItags = new ArrayList<Integer>();
+		try {
+			Connection conexion;
+			conexion = DriverManager.getConnection ("jdbc:mysql://localhost/agem_31","root", "1609");
+			Statement s = conexion.createStatement(); 
+			ResultSet rs = s.executeQuery ("select * from tbvg_gxd_core where structure_id = 7005;");
+			while (rs.next()) 
+			{ 
+			    MGItags.add((rs.getInt (2))); 
+			}
+			conexion.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}	
+		return MGItags;
 	}
 }
