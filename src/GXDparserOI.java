@@ -35,13 +35,13 @@ public class GXDparserOI {
 			e.printStackTrace();
 		}
 		MGIidentifiers = (HashSet<Integer>) GXDtoMGIconverter(tagidentifiers);
-		/*int c = 0;
+		int c = 0;
 		for (int n : MGIidentifiers)
 		{
 			System.out.println(n);
 			c++;
 		}
-		System.out.println(c);*/
+		System.out.println(c);
 	}
 	public static int[] getchildren(int father)
 	{
@@ -77,22 +77,28 @@ public class GXDparserOI {
 	public static Set<Integer> GXDtoMGIconverter(ArrayList<Integer> tagidentifiers)
 	{
 		Set<Integer> MGItags = new HashSet<Integer>();
+		String query = new String();
+		query = "";
 		for (int n : tagidentifiers)
 		{
-			try {
-				Connection conexion;
-				conexion = DriverManager.getConnection ("jdbc:mysql://localhost/agem_31","root", "1609");
-				Statement s = conexion.createStatement(); 
-				ResultSet rs = s.executeQuery ("select * from tbvg_gxd_core where structure_id =" + n + ";");
-				while (rs.next()) 
-				{ 
-					MGItags.add((rs.getInt (2)));
-				}
-				conexion.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}	
+			query = query + n + ", ";
 		}
+		try {
+			Connection conexion;
+			conexion = DriverManager.getConnection ("jdbc:mysql://localhost/agem_31","root", "1609");
+			Statement s = conexion.createStatement(); 
+			query = query.substring(0, query.length()-2);
+			query = "select * from tbvg_gxd_core where structure_id in (" + query + ");";
+			ResultSet rs = s.executeQuery (query);
+			while (rs.next()) 
+			{ 
+				MGItags.add((rs.getInt (2)));
+			}
+			conexion.close();
+		} 
+		catch (SQLException e) {
+			e.printStackTrace();
+		}	
 		return MGItags;
 	}
 }
