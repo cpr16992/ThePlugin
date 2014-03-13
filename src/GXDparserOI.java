@@ -4,11 +4,13 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 public class GXDparserOI {
 
-	protected ArrayList<Integer> tagidentifiers;
-	protected static ArrayList<Integer> MGIidentifiers;
+	protected static ArrayList<Integer> tagidentifiers;
+	protected static HashSet<Integer> MGIidentifiers;
 
 	public static void main(String[] args) {
 		ArrayList<Integer> tagidentifiers = new ArrayList<Integer>(); ;
@@ -24,7 +26,6 @@ public class GXDparserOI {
 				{ 
 					int number = children[bindex];
 					tagidentifiers.add(number); 
-					System.out.println(number);
 					bindex++;
 				}
 
@@ -33,14 +34,14 @@ public class GXDparserOI {
 		{
 			e.printStackTrace();
 		}
-		MGIidentifiers = GXDtoMGIconverter();
-		int c = 0;
+		MGIidentifiers = (HashSet<Integer>) GXDtoMGIconverter(tagidentifiers);
+		/*int c = 0;
 		for (int n : MGIidentifiers)
 		{
 			System.out.println(n);
 			c++;
 		}
-		System.out.println(c);
+		System.out.println(c);*/
 	}
 	public static int[] getchildren(int father)
 	{
@@ -73,22 +74,25 @@ public class GXDparserOI {
 		return children;
 	}
 
-	public static ArrayList<Integer> GXDtoMGIconverter()
+	public static Set<Integer> GXDtoMGIconverter(ArrayList<Integer> tagidentifiers)
 	{
-		ArrayList<Integer> MGItags = new ArrayList<Integer>();
-		try {
-			Connection conexion;
-			conexion = DriverManager.getConnection ("jdbc:mysql://localhost/agem_31","root", "1609");
-			Statement s = conexion.createStatement(); 
-			ResultSet rs = s.executeQuery ("select * from tbvg_gxd_core where structure_id = 7005;");
-			while (rs.next()) 
-			{ 
-			    MGItags.add((rs.getInt (2))); 
-			}
-			conexion.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}	
+		Set<Integer> MGItags = new HashSet<Integer>();
+		for (int n : tagidentifiers)
+		{
+			try {
+				Connection conexion;
+				conexion = DriverManager.getConnection ("jdbc:mysql://localhost/agem_31","root", "1609");
+				Statement s = conexion.createStatement(); 
+				ResultSet rs = s.executeQuery ("select * from tbvg_gxd_core where structure_id =" + n + ";");
+				while (rs.next()) 
+				{ 
+					MGItags.add((rs.getInt (2)));
+				}
+				conexion.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}	
+		}
 		return MGItags;
 	}
 }
