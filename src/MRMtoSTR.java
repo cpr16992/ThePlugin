@@ -41,10 +41,12 @@ public class MRMtoSTR extends ArrayList<Structure>
 	 */
 	 public void printTags()
 	{
-		for (int i = 0; i < MRMTags.size(); i++)
+		int i = 0;
+		for (i = 0; i < MRMTags.size(); i++)
 		{
 			System.out.println(MRMTags.get(i).getName());
 		}
+		System.out.println(i);
 	}
 
 	private ArrayList<String> readFile(String file) throws IOException {
@@ -61,7 +63,7 @@ public class MRMtoSTR extends ArrayList<Structure>
 	}
 	 
 	public static void main(String[] args){
-		 MRMtoSTR etiquetas = new MRMtoSTR("F:\\PFC\\Atlas LONI MRM\\Atlas LONI MRM\\MRM.txt");
+		 MRMtoSTR etiquetas = new MRMtoSTR("C:\\Users\\cporras\\Desktop\\Atlases\\Atlas LONI MRM\\Atlas LONI MRM\\MRM.txt");
 		 etiquetas.printTags();
 	}
 }

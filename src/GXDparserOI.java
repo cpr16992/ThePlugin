@@ -32,9 +32,9 @@ public class GXDparserOI {
 		}
 		MGIidentifiers = (HashSet<Integer>) GXDtoMGIconverter(tagidentifiers);
 		int c = 0;
-		for (int n : MGIidentifiers)
+		for (Structure n : tagidentifiers)
 		{
-			System.out.println(n);
+			System.out.println(n.getName());
 			c++;
 		}
 		System.out.println(c);
