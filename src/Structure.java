@@ -72,7 +72,6 @@ public class Structure {
     protected String parentStructureId;
     protected List<Structure> children= new ArrayList<Structure>();
     protected String graylevel;
-    //
 	protected String structureNameKey;
 	protected String edinburghKey;
 	protected String treeDepth;
@@ -305,6 +304,11 @@ public class Structure {
      */
     public void addChild(Structure value) {
         this.children.add(value);
+    }
+    
+    public void addChildren(ArrayList<Structure> newchildren)
+    {
+    	this.children.addAll(newchildren);
     }
     
     public String getGrayLevel() {

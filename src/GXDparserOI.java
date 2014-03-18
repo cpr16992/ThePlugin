@@ -9,29 +9,25 @@ import java.util.Set;
 
 public class GXDparserOI {
 
-	protected static ArrayList<Integer> tagidentifiers;
+	protected static ArrayList<Structure> tagidentifiers;
 	protected static HashSet<Integer> MGIidentifiers;
 
 	public static void main(String[] args) {
-		ArrayList<Integer> tagidentifiers = new ArrayList<Integer>(); ;
-		int childnumber = 7005;
-		tagidentifiers.add(childnumber);
-		try
-		{
-			for (int index = 0; index < tagidentifiers.size(); index ++)
+		ArrayList<Structure> tagidentifiers = new ArrayList<Structure>(); ;
+		try {
+			Connection conexion = DriverManager.getConnection ("jdbc:mysql://localhost/agem_31","root", "1609");
+			Statement s = conexion.createStatement(); 
+			ResultSet rs = s.executeQuery ("select * from tbvg_mgi_gxd_structure where _Structure_key = 7005;");
+			rs.last();
+			int size = rs.getRow();
+			rs.first();
+			for (int k = 0; k < size; k++)
 			{
-				int [] children = getchildren(tagidentifiers.get(index));
-				int bindex = 0;
-				while (children != null && bindex < children.length) 
-				{ 
-					int number = children[bindex];
-					tagidentifiers.add(number); 
-					bindex++;
-				}
-
-			}
-		} catch (Exception e)
-		{
+				Structure result = FillFields(rs, k);
+				tagidentifiers.add(result);
+			};
+			conexion.close();
+		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		MGIidentifiers = (HashSet<Integer>) GXDtoMGIconverter(tagidentifiers);
@@ -43,9 +39,9 @@ public class GXDparserOI {
 		}
 		System.out.println(c);
 	}
-	public static int[] getchildren(int father)
+	public static ArrayList<Structure> getchildren(int father)
 	{
-		int[] children = null;
+		ArrayList<Structure> children = new ArrayList<Structure>();
 		Connection conexion;
 		try {
 			conexion = DriverManager.getConnection ("jdbc:mysql://localhost/agem_31","root", "1609");
@@ -56,16 +52,11 @@ public class GXDparserOI {
 			rs.first();
 			if (size >0)
 			{
-				children = new int[size];
-				for (int k = 1; k <= size; k++) 
-				{ 
-					rs.absolute(k);
-					children[k-1] = rs.getInt(1); 
+				for (int k = 0; k < size; k++)
+				{
+					Structure child = FillFields(rs, k);
+					children.add(child);
 				}
-			}
-			else
-			{
-				children = null;
 			}
 			conexion.close();
 		} catch (SQLException e) {
@@ -74,14 +65,15 @@ public class GXDparserOI {
 		return children;
 	}
 
-	public static Set<Integer> GXDtoMGIconverter(ArrayList<Integer> tagidentifiers)
+	public static Set<Integer> GXDtoMGIconverter(ArrayList<Structure> tagidentifiers2)
 	{
 		Set<Integer> MGItags = new HashSet<Integer>();
 		String query = new String();
 		query = "";
-		for (int n : tagidentifiers)
+		for (Structure n : tagidentifiers2)
 		{
-			query = query + n + ", ";
+			String id = n.getId();
+			query = query + id + ", ";
 		}
 		try {
 			Connection conexion;
@@ -100,5 +92,20 @@ public class GXDparserOI {
 			e.printStackTrace();
 		}	
 		return MGItags;
+	}
+
+	public static Structure FillFields(ResultSet rs, int k) throws SQLException {
+			rs.absolute(k+1);
+			Structure tag = new Structure();
+			tag.setId(rs.getString(1));
+			tag.setParentStructureId(rs.getString(2));
+			tag.setStructureNameKey(rs.getString(3));
+			tag.setEdinburghKey(rs.getString(5));
+			tag.setName(rs.getString(6));
+			tag.setTreeDepth(rs.getString(7));
+			tag.setPrintStop(rs.getString(8));
+			tag.setTopoSort(rs.getString(9));
+			tag.addChildren(getchildren(rs.getInt(1)));
+			return tag;
 	}
 }
