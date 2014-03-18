@@ -13,7 +13,7 @@ public class GXDparserOI {
 	protected static HashSet<Integer> MGIidentifiers;
 
 	public static void main(String[] args) {
-		ArrayList<Structure> tagidentifiers = new ArrayList<Structure>(); ;
+		tagidentifiers = new ArrayList<Structure>(); ;
 		try {
 			Connection conexion = DriverManager.getConnection ("jdbc:mysql://localhost/agem_31","root", "1609");
 			Statement s = conexion.createStatement(); 
@@ -56,6 +56,8 @@ public class GXDparserOI {
 				{
 					Structure child = FillFields(rs, k);
 					children.add(child);
+					if (tagidentifiers == null) System.out.println("NOOOOOOO");	
+					tagidentifiers.add(child);
 				}
 			}
 			conexion.close();
