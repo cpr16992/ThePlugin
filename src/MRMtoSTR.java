@@ -23,7 +23,7 @@ public class MRMtoSTR extends ArrayList<Structure>
 			ArrayList<String> test = readFile(fileName);
 			for (String s : test) {
 				String [] arr = s.split("\t");				
-				Structure str = new Structure();
+				Structure str = new Structure(null, null);
 				str.setId(arr[0]);
 				str.setColorHexTriplet(arr[1]);
 				str.setAcronym(arr[2]);

@@ -59,7 +59,7 @@ public class Tags extends Hashtable<Integer, String>
 			{
 				if(tags.containsKey(i))
 				{
-					Structure tagtoadd = new Structure();
+					Structure tagtoadd = new Structure(null, null);
 					tagtoadd.setGrayLevel(Integer.toString(i));
 					tagtoadd.setName(tags.get(i));
 					ListOfTags.add(tagtoadd);

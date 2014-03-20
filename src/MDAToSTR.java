@@ -14,7 +14,7 @@ import java.util.List;
 
 public class MDAToSTR {
 	private static ArrayList<Structure> MDATags = new ArrayList<Structure>();
-	static Structure tag = new Structure();
+	static Structure tag = new Structure(null, null);
 
 	public static void main(String argv[]) {
 
@@ -58,7 +58,7 @@ public class MDAToSTR {
 			NodeList kList = eElement.getChildNodes();
 			for (int u = 0; u < kList.getLength(); u++)
 			{
-				Structure tagchild = new Structure();
+				Structure tagchild = new Structure(null, null);
 				Node mNode = kList.item(u);
 				FillFields(mNode, tagchild);
 				tag.addChild(tagchild);

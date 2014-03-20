@@ -52,7 +52,7 @@ public class GXDToSTR {
 	}
 
 	public static void FillFields(Node nNode) {
-		Structure tag = new Structure();
+		Structure tag = new Structure("a", "b");// sustituir por valores reales si queremos que vuelva a funcionar
 		Element eElement = (Element) nNode;
 		tag.setId((eElement.getElementsByTagName("_Structure_key")
 				.item(0).getTextContent()));

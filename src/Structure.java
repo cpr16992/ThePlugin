@@ -1,86 +1,36 @@
-
-
-
-
-
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlType;
 import javax.xml.datatype.XMLGregorianCalendar;
-
-
-/**
- * <p>Java class for structure complex type.
- * 
- * <p>The following schema fragment specifies the expected content contained within this class.
- * 
- * <pre>
- * &lt;complexType name="structure">
- *   &lt;complexContent>
- *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
- *       &lt;sequence>
- *         &lt;element name="id" type="{http://www.w3.org/2001/XMLSchema}String"/>
- *         &lt;element name="atlas-id" type="{http://www.w3.org/2001/XMLSchema}String"/>
- *         &lt;element name="ontology-id" type="{http://www.w3.org/2001/XMLSchema}String"/>
- *         &lt;element name="acronym" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *         &lt;element name="name" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *         &lt;element name="color-hex-triplet" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *         &lt;element name="graph-order" type="{http://www.w3.org/2001/XMLSchema}String"/>
- *         &lt;element name="st-level" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *         &lt;element name="hemisphere-id" type="{http://www.w3.org/2001/XMLSchema}String"/>
- *         &lt;element name="parent-structure-id" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *         &lt;element name="children" type="{}children"/>
- *       &lt;/sequence>
- *     &lt;/restriction>
- *   &lt;/complexContent>
- * &lt;/complexType>
- * </pre>
- * 
- * 
- */
-@XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "structure", propOrder = {
-    "id",
-    "atlasId",
-    "ontologyId",
-    "acronym",
-    "name",
-    "colorHexTriplet",
-    "graphOrder",
-    "stLevel",
-    "hemisphereId",
-    "parentStructureId",
-    "children"
-})
 public class Structure {
 
-    protected String id;
-    protected String atlasId;
-    protected String ontologyId;
-    protected String acronym;
-    protected String name;
-    protected String colorHexTriplet;
-    protected String colorR;
-    protected String colorG;
-    protected String colorB;
-    protected String graphOrder;
-    protected String stLevel;
-    protected String hemisphereId;
-    protected String parentStructureId;
-    protected List<Structure> children= new ArrayList<Structure>();
-    protected String graylevel;
-	protected String structureNameKey;
-	protected String edinburghKey;
-	protected String treeDepth;
-	protected String printStop;
-	protected String topoSort;
-	protected String structureNote;
-	protected XMLGregorianCalendar creationDate;
-	protected XMLGregorianCalendar modificationDate;
+    public String id;
+    public String atlasId;
+    public String ontologyId;
+    public String acronym;
+    public String name;
+    public String colorHexTriplet;
+    public String colorR;
+    public String colorG;
+    public String colorB;
+    public String graphOrder;
+    public String stLevel;
+    public String hemisphereId;
+    public String parentStructureId;
+    public List<Structure> children= new ArrayList<Structure>();
+    public String graylevel;
+	public String structureNameKey;
+	public String edinburghKey;
+	public String treeDepth;
+	public String printStop;
+	public String topoSort;
+	public String structureNote;
+	public XMLGregorianCalendar creationDate;
+	public XMLGregorianCalendar modificationDate;
 
+	public Structure(String id, String name){
+		this.id = id;
+		this.name = name;
+	}
     
     /**
      * Gets the value of the id property.
@@ -318,10 +268,6 @@ public class Structure {
     public void setGrayLevel(String value){
     	this.graylevel = value;
     }
-   //
-    
-    
-    
     
 	/**
 	 * Gets the value of the structureNameKey property.

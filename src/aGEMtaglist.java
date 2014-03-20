@@ -7,12 +7,12 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
-public class GXDparserOI {
+public class aGEMtaglist {
 
-	protected static ArrayList<Structure> tagidentifiers;
-	protected static HashSet<Integer> MGIidentifiers;
+	public ArrayList<Structure> tagidentifiers;
+	public HashSet<Integer> MGIidentifiers;
 
-	public static void main(String[] args) {
+	public aGEMtaglist (){
 		tagidentifiers = new ArrayList<Structure>(); ;
 		try {
 			Connection conexion = DriverManager.getConnection ("jdbc:mysql://localhost/agem_31","root", "1609");
@@ -31,15 +31,8 @@ public class GXDparserOI {
 			e.printStackTrace();
 		}
 		MGIidentifiers = (HashSet<Integer>) GXDtoMGIconverter(tagidentifiers);
-		int c = 0;
-		for (Structure n : tagidentifiers)
-		{
-			System.out.println(n.getName());
-			c++;
-		}
-		System.out.println(c);
 	}
-	public static ArrayList<Structure> getchildren(int father)
+	private  ArrayList<Structure> extractchildren(int father)
 	{
 		ArrayList<Structure> children = new ArrayList<Structure>();
 		Connection conexion;
@@ -67,7 +60,7 @@ public class GXDparserOI {
 		return children;
 	}
 
-	public static Set<Integer> GXDtoMGIconverter(ArrayList<Structure> tagidentifiers2)
+	private Set<Integer> GXDtoMGIconverter(ArrayList<Structure> tagidentifiers2)
 	{
 		Set<Integer> MGItags = new HashSet<Integer>();
 		String query = new String();
@@ -96,18 +89,43 @@ public class GXDparserOI {
 		return MGItags;
 	}
 
-	public static Structure FillFields(ResultSet rs, int k) throws SQLException {
-			rs.absolute(k+1);
-			Structure tag = new Structure();
-			tag.setId(rs.getString(1));
-			tag.setParentStructureId(rs.getString(2));
-			tag.setStructureNameKey(rs.getString(3));
-			tag.setEdinburghKey(rs.getString(5));
-			tag.setName(rs.getString(6));
-			tag.setTreeDepth(rs.getString(7));
-			tag.setPrintStop(rs.getString(8));
-			tag.setTopoSort(rs.getString(9));
-			tag.addChildren(getchildren(rs.getInt(1)));
-			return tag;
+	private Structure FillFields(ResultSet rs, int k) throws SQLException {//setter for fields
+		rs.absolute(k+1);
+		Structure tag = new Structure(rs.getString(1), rs.getString(6));
+		tag.setParentStructureId(rs.getString(2));
+		tag.setStructureNameKey(rs.getString(3));
+		tag.setEdinburghKey(rs.getString(5));
+		tag.setTreeDepth(rs.getString(7));
+		tag.setPrintStop(rs.getString(8));
+		tag.setTopoSort(rs.getString(9));
+		tag.addChildren(extractchildren(rs.getInt(1)));
+		return tag;
+	}
+	public ArrayList<Structure> getGXDtags(){
+		return tagidentifiers;
+	}
+	public HashSet<Integer> getMGIidentifiers(){
+		return MGIidentifiers;
+	}
+	public  void printer(){
+		int c = 0;
+		for (Structure n : tagidentifiers)
+		{
+			System.out.println(n.getName());
+			c++;
+		}
+		System.out.println(c);
+	}
+	public Structure search(String name){
+		for (Structure k : tagidentifiers){
+			if (k.getName().equals(name)){
+				return k;
+			}
+		}
+		return null;
+	}
+	public ArrayList<Structure> getChildren(String fathername){
+		Structure father = search(fathername);
+		return (ArrayList<Structure>) father.getChildren();
 	}
 }

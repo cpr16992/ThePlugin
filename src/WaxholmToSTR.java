@@ -42,7 +42,7 @@ public class WaxholmToSTR {
 		//showKinder();
 	}
 	public static void FillFields(Node nNode) {
-		Structure tag = new Structure();
+		Structure tag = new Structure(null, null);
 		Element eElement = (Element) nNode;
 		//Falta la ID, que no sé muy bien como resolver. Quizás sería buena idea poner una ID autoincremental
 		//(consultar ASAP)
