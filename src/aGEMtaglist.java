@@ -49,7 +49,6 @@ public class aGEMtaglist {
 				{
 					Structure child = FillFields(rs, k);
 					children.add(child);
-					if (tagidentifiers == null) System.out.println("NOOOOOOO");	
 					tagidentifiers.add(child);
 				}
 			}
@@ -124,8 +123,66 @@ public class aGEMtaglist {
 		}
 		return null;
 	}
+	public Structure searchbyID(String ID){
+		for (Structure k : tagidentifiers){
+			if (k.getId().equals(ID)){
+				return k;
+			}
+		}
+		return null;
+	}
 	public ArrayList<Structure> getChildren(String fathername){
 		Structure father = search(fathername);
 		return (ArrayList<Structure>) father.getChildren();
+	}
+	
+	public void showChildren(String fathername){
+		ArrayList<Structure> children = getChildren(fathername);
+		for (Structure n: children){
+			System.out.println(n.getName());
+		}
+	}
+	public ArrayList<Structure> getAllDescendants(String fathername){
+		ArrayList<Structure> children = getChildren(fathername);
+		ArrayList<Structure> allDescendants = new ArrayList<Structure>();
+		if (children.isEmpty() == false){
+			for (Structure n: children){
+				ArrayList<Structure> grandchildren = getAllDescendants(n.getName());
+				allDescendants.addAll(grandchildren);
+			}
+		}
+		allDescendants.addAll(children);
+		return allDescendants;
+	}
+	
+	public void showAllDescendants(String fathername){
+		ArrayList<Structure> allDescendants = getAllDescendants(fathername);
+		for (Structure n: allDescendants){
+			System.out.println(n.getName());
+		}
+	}
+	
+	public Structure getFather(String name){
+		Structure sibiling = search(name);
+		Structure father = searchbyID(sibiling.getParentStructureId());
+		return father;
+	}
+	
+	public ArrayList<Structure> getAllAncestors(String name){
+		Structure father = getFather(name);
+		ArrayList<Structure> ancestors = new ArrayList<Structure>();
+		if (name.equals("brain") == false){
+			ArrayList <Structure> moreancestors = getAllAncestors(father.getName());
+			ancestors.addAll(moreancestors);
+		}
+		ancestors.add(father);
+		return ancestors;
+	}
+	
+	public void showAllAncestors(String name){
+		ArrayList<Structure> ancestors = getAllAncestors(name);
+		for (Structure n: ancestors){
+			System.out.println(n.getName());
+		}
 	}
 }
