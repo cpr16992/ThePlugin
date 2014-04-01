@@ -135,7 +135,7 @@ public class aGEMtaglist {
 		Structure father = search(fathername);
 		return (ArrayList<Structure>) father.getChildren();
 	}
-	
+
 	public void showChildren(String fathername){
 		ArrayList<Structure> children = getChildren(fathername);
 		for (Structure n: children){
@@ -154,31 +154,35 @@ public class aGEMtaglist {
 		allDescendants.addAll(children);
 		return allDescendants;
 	}
-	
+
 	public void showAllDescendants(String fathername){
 		ArrayList<Structure> allDescendants = getAllDescendants(fathername);
 		for (Structure n: allDescendants){
 			System.out.println(n.getName());
 		}
 	}
-	
+
 	public Structure getFather(String name){
 		Structure sibiling = search(name);
 		Structure father = searchbyID(sibiling.getParentStructureId());
 		return father;
 	}
-	
+
 	public ArrayList<Structure> getAllAncestors(String name){
 		Structure father = getFather(name);
 		ArrayList<Structure> ancestors = new ArrayList<Structure>();
 		if (name.equals("brain") == false){
 			ArrayList <Structure> moreancestors = getAllAncestors(father.getName());
-			ancestors.addAll(moreancestors);
+			if (moreancestors.isEmpty() == false){
+				ancestors.addAll(moreancestors);
+			}
 		}
-		ancestors.add(father);
+		if (father != null){
+			ancestors.add(father);
+		}
 		return ancestors;
 	}
-	
+
 	public void showAllAncestors(String name){
 		ArrayList<Structure> ancestors = getAllAncestors(name);
 		for (Structure n: ancestors){

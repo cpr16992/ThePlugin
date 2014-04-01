@@ -13,11 +13,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MDAToSTR {
-	private static ArrayList<Structure> MDATags = new ArrayList<Structure>();
-	static Structure tag = new Structure(null, null);
-
-	public static void main(String argv[]) {
-
+	public ArrayList<Structure> MDATags = new ArrayList<Structure>();
+	public Structure tag = new Structure(null, null);
+	public MDAToSTR(){
 		try {
 
 			File fXmlFile = new File("C:\\Users\\cporras\\Desktop\\Atlases\\Atlas LONI MDA\\Atlas LONI MDA\\MDA.xml");
@@ -37,35 +35,33 @@ public class MDAToSTR {
 				for (int u = 0; u < mList.getLength(); u++)
 				{
 					Node mNode = mList.item(u);
-					FillFields(mNode, tag);
+					FillFields(mNode);
 				}
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		PrintNames();
-		//PrintChildren();
-		System.out.println(MDATags.size());
+	
 	}
-	public static void FillFields(Node nNode, Structure tag) {		
+
+	
+	private Structure FillFields(Node nNode) {	
 		Element eElement = (Element) nNode;
-		tag.setId((eElement.getAttribute("id")));
+		Structure tag = new Structure((eElement.getAttribute("id")), (eElement.getAttribute("name")));
 		tag.setColorHexTriplet((eElement.getAttribute("color")));
 		tag.setAcronym((eElement.getAttribute("abbreviation")));
-		tag.setName((eElement.getAttribute("name")));
 		if (eElement.hasChildNodes())
 		{
 			NodeList kList = eElement.getChildNodes();
 			for (int u = 0; u < kList.getLength(); u++)
 			{
-				Structure tagchild = new Structure(null, null);
 				Node mNode = kList.item(u);
-				FillFields(mNode, tagchild);
+				Structure tagchild = FillFields(mNode);
 				tag.addChild(tagchild);
 			}
 		}		
 		MDATags.add(tag);
-
+		return tag;
 	}
 
 	public static void PrintNames() {

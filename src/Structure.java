@@ -31,6 +31,10 @@ public class Structure {
 		this.id = id;
 		this.name = name;
 	}
+	
+	public Structure(){
+		
+	}
     
     /**
      * Gets the value of the id property.
