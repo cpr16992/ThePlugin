@@ -117,7 +117,7 @@ public class aGEMtaglist {
 	}
 	public Structure search(String name){
 		for (Structure k : tagidentifiers){
-			if (k.getName().equals(name)){
+			if (k.getName().equalsIgnoreCase(name)){
 				return k;
 			}
 		}

@@ -113,5 +113,18 @@ public class MDAToSTR {
 			System.out.println(kind.getName());
 		};
 	}
+	
+	public Structure searchtag(String name){
+		for (Structure k : MDATags){
+			if (k.getName().equalsIgnoreCase(name)){
+				return k;
+			}
+		}
+		return null;
+	}
+	
+	public int getsize(){
+		return MDATags.size();
+	}
 
 }
