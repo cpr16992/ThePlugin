@@ -35,7 +35,7 @@ public class MDAToSTR {
 				for (int u = 0; u < mList.getLength(); u++)
 				{
 					Node mNode = mList.item(u);
-					FillFields(mNode);
+					tag = FillFields(mNode);
 				}
 			}
 		} catch (Exception e) {
@@ -59,17 +59,23 @@ public class MDAToSTR {
 				Structure tagchild = FillFields(mNode);
 				tag.addChild(tagchild);
 			}
-		}		
+		}
 		MDATags.add(tag);
 		return tag;
 	}
 
-	public static void PrintNames() {
+	public void PrintNames() {
 		for (Structure str : MDATags) {
 			System.out.println(str.getName());
 		}
 	}
-	public static void PrintChildren() {
+	
+	public ArrayList<Structure> getlist()
+	{
+		return MDATags;
+	}
+	
+	public void PrintChildren() {
 		for (int s = 0; s<MDATags.size(); s++)
 		{
 			List<Structure> Children = MDATags.get(s).getChildren();
@@ -79,7 +85,7 @@ public class MDAToSTR {
 			}
 		}
 	}
-	public static void SortKinder(Structure parent){
+	public void SortKinder(Structure parent){
 		for (Structure kind : MDATags)
 		{
 			if (kind.isChild(parent)) {
@@ -88,10 +94,10 @@ public class MDAToSTR {
 			}
 		}
 	}
-	public static void PrintNames (Structure str) {
+	public void PrintNames (Structure str) {
 		System.out.println(str.getName());
 	}
-	public static String[] getTags(){
+	public String[] getTags(){
 		String[] MDATagName = new String[MDATags.size()];
 		for (int i = 0; i < MDATags.size(); i++)
 		{
@@ -99,7 +105,7 @@ public class MDAToSTR {
 		}
 		return MDATagName;
 	}
-	public static void showKinder (){
+	public void showKinder (){
 		Structure root = MDATags.get(0);
 		List<Structure> lista = root.getChildren();
 		for (Structure kind: lista)
