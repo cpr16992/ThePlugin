@@ -123,6 +123,35 @@ public class MDAToSTR {
 		return null;
 	}
 	
+	public ArrayList<Structure> getChildTags(String name){
+		Structure father =  searchtag(name);
+		ArrayList<Structure> ChildTags = new ArrayList<Structure>();
+		if (father.getChildren() != null){
+			ChildTags.addAll(father.getChildren());
+		}
+		return ChildTags;
+	}
+	
+	public ArrayList<Structure> getAllDescendants(String name){
+		ArrayList<Structure> firstLevelChildren = getChildTags(name);
+		ArrayList<Structure> descendants = new ArrayList<Structure>();
+		if (firstLevelChildren != null){
+			for (Structure s: firstLevelChildren){
+				ArrayList<Structure> nextLevelChildren = getAllDescendants(s.getName());
+				descendants.addAll(nextLevelChildren);
+			}
+			descendants.addAll(firstLevelChildren);
+		}
+		return descendants;
+	}
+	
+	public void showAllDescendants(String name){
+		ArrayList<Structure> descendants = getAllDescendants(name);
+		for (Structure s: descendants){
+			System.out.println(s.getName());
+		}
+	}
+	
 	public int getsize(){
 		return MDATags.size();
 	}

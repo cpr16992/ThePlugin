@@ -2,14 +2,15 @@ import jxl.*;
 
 import java.io.*; 
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.Hashtable;
 
 public class mapeo {
 	public Hashtable<Structure, ArrayList<Structure>> MDAtoaGEM = new Hashtable<Structure, ArrayList<Structure>>();
+	public Hashtable<ArrayList<Structure>, Structure> aGEMtoMDA = new Hashtable<ArrayList<Structure>, Structure>();
 	public MDAToSTR MDAlist = new MDAToSTR();
 	public aGEMtaglist aGEMlist = new aGEMtaglist();
 	public mapeo() { 
-
 		try { 
 			Workbook archivoExcel = Workbook.getWorkbook(new File("C:\\Users\\cporras\\git\\ThePlugin\\DOC\\mapeo.xls"));                                                                                                                                                    
 			Sheet hoja = archivoExcel.getSheet(0); 
@@ -26,16 +27,88 @@ public class mapeo {
 					}
 				}
 				MDAtoaGEM.put(n, aGEMcorrespondencias);
+				aGEMtoMDA.put(aGEMcorrespondencias, n);
 			} 
 		} catch (Exception ioe) { 
 			ioe.printStackTrace(); 
 		} 
 
 	} 
-	
+
 	public ArrayList<Structure> findcorrespondences(String MDAname){
 		Structure MDAStr = MDAlist.searchtag(MDAname);
 		ArrayList<Structure> correspondences = MDAtoaGEM.get(MDAStr);
 		return correspondences;
 	}
+
+	public void showcorrespondences(String MDAname){
+		ArrayList<Structure> MDAstruct = findcorrespondences(MDAname);
+		for (Structure k: MDAstruct){
+			System.out.println(k.getName());
+		}
+	}
+
+	public ArrayList<Structure> FindAllDownstreamCorrespondences(String MDAname){
+		Structure father = MDAlist.searchtag(MDAname);
+		ArrayList<Structure> queriedStructures = MDAlist.getAllDescendants(MDAname);
+		queriedStructures.add(father);
+		ArrayList<Structure> downstreamCorrespondences = new ArrayList<Structure>();
+		for (Structure s:queriedStructures){
+			ArrayList<Structure> correspondences = findcorrespondences(s.getName());
+			downstreamCorrespondences.addAll(correspondences);
+		}
+		return downstreamCorrespondences;
+	}
+
+	public void showDownstreamCorrespondences(String MDAname){
+		ArrayList<Structure> list = FindAllDownstreamCorrespondences(MDAname);
+		for (Structure k:list){
+			System.out.println(k.getName());
+		}
+	}
+
+	public Structure findinversecorrespondence(String aGEMname){
+		Structure StrOI = aGEMlist.search(aGEMname);
+		Enumeration<ArrayList<Structure>> aGtags = MDAtoaGEM.elements();
+		Enumeration<Structure> MDAtags = MDAtoaGEM.keys();
+		while (aGtags.hasMoreElements()){
+			ArrayList<Structure> piecelist = aGtags.nextElement();
+			Structure current = MDAtags.nextElement();
+			if (piecelist.contains(StrOI))
+			{
+				return current;
+			}
+		}
+		System.out.println("Structure not found");
+		return null;
+	}
+
+	public void showinversecorrespondence(String aGEMname){
+		Structure corr = findinversecorrespondence(aGEMname);
+		if (corr != null){
+			System.out.println(corr.getName());
+		}
+	}
+	
+	public ArrayList<Structure> findinversedownstreamcorrespondences(String aGEMname){
+		Structure StrOI = aGEMlist.search(aGEMname);
+		ArrayList<Structure> queriedStructures = aGEMlist.getAllDescendants(aGEMname);
+		queriedStructures.add(StrOI);
+		ArrayList<Structure> downstreamCorrespondences = new ArrayList<Structure>();
+		for (Structure s:queriedStructures){
+			Structure correspondence = findinversecorrespondence(s.getName());
+			if (downstreamCorrespondences.contains(correspondence) == false){
+				downstreamCorrespondences.add(correspondence);	
+			}
+		}
+		return downstreamCorrespondences;
+	}
+	
+	public void showinversedownstreamcorrespondences(String aGEMname){
+		ArrayList<Structure> list = findinversedownstreamcorrespondences(aGEMname);
+		for (Structure s: list){
+			System.out.println(s.getName());
+		}
+	}
+
 }
