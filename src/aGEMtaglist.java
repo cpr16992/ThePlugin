@@ -11,6 +11,7 @@ public class aGEMtaglist {
 
 	public ArrayList<Structure> tagidentifiers;
 	public HashSet<Integer> MGIidentifiers;
+	public ArrayList<Gene> genelist;
 
 	public aGEMtaglist (){
 		tagidentifiers = new ArrayList<Structure>(); ;
@@ -31,6 +32,7 @@ public class aGEMtaglist {
 			e.printStackTrace();
 		}
 		MGIidentifiers = (HashSet<Integer>) GXDtoMGIconverter(tagidentifiers);
+		genelist = setGenes(tagidentifiers);
 	}
 	private  ArrayList<Structure> extractchildren(int father)
 	{
@@ -57,6 +59,26 @@ public class aGEMtaglist {
 			e.printStackTrace();
 		}
 		return children;
+	}
+	
+	public String[] strToString(){
+		String[] listofS = new String[tagidentifiers.size()];
+		int count = 0;
+		for (Structure k: tagidentifiers){
+			listofS[count] = k.getName();
+			count++;
+		}
+		return listofS;
+	}
+	
+	public String[] geneToString(){
+		String[] listofS = new String[genelist.size()];
+		int count = 0;
+		for (Gene k: genelist){
+			listofS[count] = k.getName();
+			count++;
+		}
+		return listofS;
 	}
 
 	private Set<Integer> GXDtoMGIconverter(ArrayList<Structure> tagidentifiers2)
@@ -87,6 +109,45 @@ public class aGEMtaglist {
 		}	
 		return MGItags;
 	}
+	
+	private ArrayList<Gene> setGenes(ArrayList<Structure> tagidentifiers){
+		ArrayList<Gene> genes = new ArrayList<Gene>();
+		String query = new String();
+		query = "";
+		for (Structure n : tagidentifiers)
+		{
+			String id = n.getId();
+			query = query + id + ", ";
+		}
+		try {
+			Connection conexion = DriverManager.getConnection ("jdbc:mysql://localhost/agem_31","root", "1609");
+			Statement s = conexion.createStatement(); 
+			query = query.substring(0, query.length()-2);
+			query = "select * from tbvg_mgi_gxd_full where _structure_key in (" + query + ");";
+			ResultSet rs = s.executeQuery (query);
+			while (rs.next()) 
+			{ 
+				Gene newGene = new Gene();
+				newGene.setId(rs.getString(1));
+				newGene.setAssayKey(rs.getString(2));
+				newGene.setResultKey(rs.getString(3));
+				newGene.setMarkerKey(rs.getString(4));
+				newGene.setNumericPart(rs.getString(5));
+				newGene.setSymbol(rs.getString(6));
+				newGene.setName(rs.getString(7));
+				newGene.setAssayTypeKey(rs.getString(8));
+				newGene.setStructureName(rs.getString(9));
+				newGene.setStructureKey(rs.getString(10));
+				newGene.setEdinburghKey(rs.getString(11));
+				newGene.setStrength(rs.getString(15));
+				genes.add(newGene);
+			}
+			conexion.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return genes;
+	}
 
 	private Structure FillFields(ResultSet rs, int k) throws SQLException {//setter for fields
 		rs.absolute(k+1);
@@ -106,6 +167,11 @@ public class aGEMtaglist {
 	public HashSet<Integer> getMGIidentifiers(){
 		return MGIidentifiers;
 	}
+	
+	public ArrayList<Gene> getGenes(){
+		return genelist;
+	}
+	
 	public  void printer(){
 		int c = 0;
 		for (Structure n : tagidentifiers)
@@ -131,6 +197,24 @@ public class aGEMtaglist {
 		}
 		return null;
 	}
+	public void searchgene(String name){
+		for (Gene l: genelist){
+			if (l.getName().contains(name)){
+				System.out.println(l.getName());
+			}
+		}
+	}
+	
+	public void searchgenesbystructure(String name){
+		Structure where = search(name);
+		String StrID = where.getId();
+		for (Gene p: genelist){
+			if (p.getStructureKey().equalsIgnoreCase(StrID)){
+				System.out.println(p.getName());
+			}
+		}
+	}
+	
 	public ArrayList<Structure> getChildren(String fathername){
 		Structure father = search(fathername);
 		return (ArrayList<Structure>) father.getChildren();

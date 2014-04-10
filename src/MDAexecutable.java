@@ -1,11 +1,11 @@
 import java.util.ArrayList;
 
+//import java.util.ArrayList;
+
 public class MDAexecutable {
 	public static void main (String[] args) {
 		mapeo map = new mapeo();
-		//MDAToSTR MDA = new MDAToSTR();
-		//MDA.showAllDescendants("brain");
-		map.showinversedownstreamcorrespondences("brain");
+		map.aGEMlist.searchgenesbystructure("hippocampus");
 		//for (Structure k: midbrain){
 		//	System.out.println(k.getName());
 		//}

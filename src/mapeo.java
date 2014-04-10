@@ -35,14 +35,14 @@ public class mapeo {
 
 	} 
 
-	public ArrayList<Structure> findcorrespondences(String MDAname){
+	public ArrayList<Structure> FindCorrespondences(String MDAname){
 		Structure MDAStr = MDAlist.searchtag(MDAname);
 		ArrayList<Structure> correspondences = MDAtoaGEM.get(MDAStr);
 		return correspondences;
 	}
 
-	public void showcorrespondences(String MDAname){
-		ArrayList<Structure> MDAstruct = findcorrespondences(MDAname);
+	public void ShowCorrespondences(String MDAname){
+		ArrayList<Structure> MDAstruct = FindCorrespondences(MDAname);
 		for (Structure k: MDAstruct){
 			System.out.println(k.getName());
 		}
@@ -54,7 +54,7 @@ public class mapeo {
 		queriedStructures.add(father);
 		ArrayList<Structure> downstreamCorrespondences = new ArrayList<Structure>();
 		for (Structure s:queriedStructures){
-			ArrayList<Structure> correspondences = findcorrespondences(s.getName());
+			ArrayList<Structure> correspondences = FindCorrespondences(s.getName());
 			downstreamCorrespondences.addAll(correspondences);
 		}
 		return downstreamCorrespondences;
@@ -67,7 +67,7 @@ public class mapeo {
 		}
 	}
 
-	public Structure findinversecorrespondence(String aGEMname){
+	public Structure FindInverseCorrespondence(String aGEMname){
 		Structure StrOI = aGEMlist.search(aGEMname);
 		Enumeration<ArrayList<Structure>> aGtags = MDAtoaGEM.elements();
 		Enumeration<Structure> MDAtags = MDAtoaGEM.keys();
@@ -83,20 +83,20 @@ public class mapeo {
 		return null;
 	}
 
-	public void showinversecorrespondence(String aGEMname){
-		Structure corr = findinversecorrespondence(aGEMname);
+	public void ShowInverseCorrespondence(String aGEMname){
+		Structure corr = FindInverseCorrespondence(aGEMname);
 		if (corr != null){
 			System.out.println(corr.getName());
 		}
 	}
 	
-	public ArrayList<Structure> findinversedownstreamcorrespondences(String aGEMname){
+	public ArrayList<Structure> FindInverseDownstreamCorrespondences(String aGEMname){
 		Structure StrOI = aGEMlist.search(aGEMname);
 		ArrayList<Structure> queriedStructures = aGEMlist.getAllDescendants(aGEMname);
 		queriedStructures.add(StrOI);
 		ArrayList<Structure> downstreamCorrespondences = new ArrayList<Structure>();
 		for (Structure s:queriedStructures){
-			Structure correspondence = findinversecorrespondence(s.getName());
+			Structure correspondence = FindInverseCorrespondence(s.getName());
 			if (downstreamCorrespondences.contains(correspondence) == false){
 				downstreamCorrespondences.add(correspondence);	
 			}
@@ -104,8 +104,8 @@ public class mapeo {
 		return downstreamCorrespondences;
 	}
 	
-	public void showinversedownstreamcorrespondences(String aGEMname){
-		ArrayList<Structure> list = findinversedownstreamcorrespondences(aGEMname);
+	public void ShowInverseDownstreamCorrespondences(String aGEMname){
+		ArrayList<Structure> list = FindInverseDownstreamCorrespondences(aGEMname);
 		for (Structure s: list){
 			System.out.println(s.getName());
 		}
