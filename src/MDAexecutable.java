@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class MDAexecutable {
 	public static void main (String[] args) {
 		mapeo map = new mapeo();
-		map.aGEMlist.searchgenesbystructure("hippocampus");
+		System.out.println(map.aGEMlist.strToString());
 		//for (Structure k: midbrain){
 		//	System.out.println(k.getName());
 		//}
