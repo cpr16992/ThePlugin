@@ -18,7 +18,7 @@ import javax.swing.border.EmptyBorder;
 
 
 @SuppressWarnings("serial")
-public class windowAnatomy extends JFrame implements ActionListener {
+public class windowGene extends JFrame implements ActionListener {
 
 	private JPanel contentPane;
 	@SuppressWarnings("rawtypes")
@@ -36,7 +36,7 @@ public class windowAnatomy extends JFrame implements ActionListener {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					windowAnatomy frame = new windowAnatomy();
+					windowGene frame = new windowGene();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -49,15 +49,15 @@ public class windowAnatomy extends JFrame implements ActionListener {
 	 * Create the frame.
 	 */
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public windowAnatomy() {
-		setTitle("Please select a structure");
+	public windowGene() {
+		setTitle("Please select (a) gene(s)");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		
-		lblPleaseSelectThe = new JLabel("Please select the structure(s) you want to query about:");
+		lblPleaseSelectThe = new JLabel("Please select the gene(s) you want to query about:");
 		lblPleaseSelectThe.setHorizontalAlignment(SwingConstants.CENTER);
 		
 		scrollPane = new JScrollPane();		
@@ -91,7 +91,7 @@ public class windowAnatomy extends JFrame implements ActionListener {
 		
 		list = new JList();
 		list.setModel(new AbstractListModel() {
-			String[] values = aGEM.strToString();
+			String[] values = aGEM.geneToString();
 			public int getSize() {
 				return values.length;
 			}

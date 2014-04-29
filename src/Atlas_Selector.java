@@ -9,7 +9,11 @@ public class Atlas_Selector extends PlugInFrame{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private ArrayList<Structure> query;
+	private MDAToSTR MDA = new MDAToSTR();
+	private aGEMtaglist aGEM = new aGEMtaglist();
+	private ArrayList<String> query = new ArrayList<String>();
+	private ArrayList<Structure> querystr = new ArrayList<Structure>();
+	private ArrayList<Gene> queryg = new ArrayList<Gene>();
 
 
 	public Atlas_Selector() {
@@ -38,10 +42,21 @@ public class Atlas_Selector extends PlugInFrame{
 			}
 			query = widow.getResults();
 			widow.dispose();
+			for (String str: query){
+				querystr.add(MDA.searchtag(str));
+			}
 		}
 		else if (result1.equals("Gene"))
 		{
-			
+			windowGene widow = new windowGene();
+			while (!widow.wasperformed){
+				query = widow.getResults();
+			}
+			query = widow.getResults();
+			widow.dispose();
+			for (String str: query){
+				queryg.add(aGEM.searchgene(str));
+			}
 		}
 	}
 

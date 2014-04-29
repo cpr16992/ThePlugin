@@ -4,6 +4,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -11,7 +12,8 @@ public class aGEMtaglist {
 
 	public ArrayList<Structure> tagidentifiers;
 	public HashSet<Integer> MGIidentifiers;
-	public ArrayList<Gene> genelist;
+	public ArrayList<Gene> allgenes;
+	//public HashSet<Gene> genelist;
 
 	public aGEMtaglist (){
 		tagidentifiers = new ArrayList<Structure>(); ;
@@ -32,7 +34,7 @@ public class aGEMtaglist {
 			e.printStackTrace();
 		}
 		MGIidentifiers = (HashSet<Integer>) GXDtoMGIconverter(tagidentifiers);
-		genelist = setGenes(tagidentifiers);
+		allgenes = setGenes(tagidentifiers);
 	}
 	private  ArrayList<Structure> extractchildren(int father)
 	{
@@ -72,12 +74,13 @@ public class aGEMtaglist {
 	}
 	
 	public String[] geneToString(){
-		String[] listofS = new String[genelist.size()];
-		int count = 0;
-		for (Gene k: genelist){
-			listofS[count] = k.getName();
-			count++;
+		Set<String> genelist = new HashSet<String>();
+		for (Gene k: allgenes){
+			genelist.add(k.getName());
 		}
+		String[] listofS = new String[genelist.size()];
+		listofS = genelist.toArray(listofS);
+		Arrays.sort(listofS);
 		return listofS;
 	}
 
@@ -161,6 +164,7 @@ public class aGEMtaglist {
 		tag.addChildren(extractchildren(rs.getInt(1)));
 		return tag;
 	}
+	
 	public ArrayList<Structure> getGXDtags(){
 		return tagidentifiers;
 	}
@@ -169,14 +173,23 @@ public class aGEMtaglist {
 	}
 	
 	public ArrayList<Gene> getGenes(){
-		return genelist;
-	}
-	
+		return allgenes;
+	}	
 	public  void printer(){
 		int c = 0;
 		for (Structure n : tagidentifiers)
 		{
 			System.out.println(n.getName());
+			c++;
+		}
+		System.out.println(c);
+	}
+	public void geneprinter(){
+		int c = 0;
+		String[] str = this.geneToString();
+		for (String n : str)
+		{
+			System.out.println(n);
 			c++;
 		}
 		System.out.println(c);
@@ -197,18 +210,19 @@ public class aGEMtaglist {
 		}
 		return null;
 	}
-	public void searchgene(String name){
-		for (Gene l: genelist){
+	public Gene searchgene(String name){
+		for (Gene l: allgenes){
 			if (l.getName().contains(name)){
-				System.out.println(l.getName());
+				return l;
 			}
 		}
+		return null;
 	}
 	
 	public void searchgenesbystructure(String name){
 		Structure where = search(name);
 		String StrID = where.getId();
-		for (Gene p: genelist){
+		for (Gene p: allgenes){
 			if (p.getStructureKey().equalsIgnoreCase(StrID)){
 				System.out.println(p.getName());
 			}
