@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class MDAexecutable {
 	public static void main (String[] args) {
 		mapeo map = new mapeo();
-		System.out.println(map.aGEMlist.strToString());
+		map.FindInverseDownstreamCorrespondences("substantia nigra");
 		//for (Structure k: midbrain){
 		//	System.out.println(k.getName());
 		//}

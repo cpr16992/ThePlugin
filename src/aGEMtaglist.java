@@ -70,6 +70,7 @@ public class aGEMtaglist {
 			listofS[count] = k.getName();
 			count++;
 		}
+		Arrays.sort(listofS);
 		return listofS;
 	}
 	

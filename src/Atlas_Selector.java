@@ -1,19 +1,28 @@
-import java.util.ArrayList;
-
 import ij.IJ;
+import ij.ImagePlus;
+import ij.ImageStack;
+import ij.Prefs;
 import ij.gui.GenericDialog;
+import ij.io.Opener;
 import ij.plugin.frame.PlugInFrame;
+import ij.process.ImageProcessor;
+import ij.process.ShortProcessor;
+import ij.process.StackProcessor;
+
+import java.util.ArrayList;
 
 public class Atlas_Selector extends PlugInFrame{
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private MDAToSTR MDA = new MDAToSTR();
-	private aGEMtaglist aGEM = new aGEMtaglist();
+	private mapeo map = new mapeo();
+	private MDAToSTR MDA = map.MDAlist;
+	private aGEMtaglist aGEM = map.aGEMlist;
 	private ArrayList<String> query = new ArrayList<String>();
 	private ArrayList<Structure> querystr = new ArrayList<Structure>();
 	private ArrayList<Gene> queryg = new ArrayList<Gene>();
+	private String path = "C:\\Users\\cporras\\Desktop\\Atlases\\Atlas LONI MDA\\Atlas LONI MDA\\Data";
 
 
 	public Atlas_Selector() {
@@ -42,9 +51,15 @@ public class Atlas_Selector extends PlugInFrame{
 			}
 			query = widow.getResults();
 			widow.dispose();
+			showAtlas(path);
 			for (String str: query){
-				querystr.add(MDA.searchtag(str));
+				ArrayList<Structure> ofInterest = map.FindInverseDownstreamCorrespondences(str);
+				querystr.addAll(ofInterest);
 			}
+			for (Structure struct: querystr){
+				makeMask(struct);
+			}
+
 		}
 		else if (result1.equals("Gene"))
 		{
@@ -57,6 +72,7 @@ public class Atlas_Selector extends PlugInFrame{
 			for (String str: query){
 				queryg.add(aGEM.searchgene(str));
 			}
+			showAtlas(path);
 		}
 	}
 
@@ -65,6 +81,26 @@ public class Atlas_Selector extends PlugInFrame{
 		GenericDialog gd = new GenericDialog("Error");
 		gd.addMessage("Error. Illegal query.");
 		gd.showDialog();
+	}
+	
+	private void showAtlas(String path){
+		Opener opener = new Opener();  
+		ImagePlus imp = opener.openTiff(path, "MAP2006_t2avg.tif");
+		imp.show();
+	}
+	
+	private void makeMask(Structure structure){
+		Opener opener = new Opener();  
+		ImagePlus atlaslabels = opener.openTiff(path, "MDA2006label.tif");
+		int threshold = Integer.parseInt(structure.getId());
+		IJ.setThreshold(atlaslabels, threshold, threshold +1);
+		Prefs.blackBackground = false;
+		IJ.run(atlaslabels, "Convert to Mask", "method=Default background=Default black");
+		IJ.run(atlaslabels, "16-bit", "");
+		atlaslabels.show();
+		ImagePlus result = new ImagePlus();
+		IJ.run(result, "Merge Channels...", "c2=MDA2006label.tif c4=MAP2006_t2avg.tif create keep");
+		result.show();
 	}
 	
 }
