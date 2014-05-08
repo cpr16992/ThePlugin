@@ -1,3 +1,4 @@
+import java.util.List;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -211,9 +212,22 @@ public class aGEMtaglist {
 		}
 		return null;
 	}
+	
+
+	 public ArrayList<Structure> findstructuresbygene(String name){
+		Set<Structure> hashset = new HashSet<Structure>();
+		for (Gene l: allgenes){
+			if (l.getName().equalsIgnoreCase(name)){
+				hashset.add(this.search(l.getStructureName()));
+			}
+		}
+		List<Structure> resultstructures = new ArrayList<Structure>(hashset);
+		return (ArrayList<Structure>) resultstructures;
+	}
+	 
 	public Gene searchgene(String name){
 		for (Gene l: allgenes){
-			if (l.getName().contains(name)){
+			if (l.getName().equalsIgnoreCase(name)){
 				return l;
 			}
 		}

@@ -10,6 +10,7 @@ import org.w3c.dom.Element;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class MDAToSTR {
@@ -62,6 +63,17 @@ public class MDAToSTR {
 		}
 		MDATags.add(tag);
 		return tag;
+	}
+	
+	public String[] strToString(){
+		String[] listofS = new String[MDATags.size()];
+		int count = 0;
+		for (Structure k: MDATags){
+			listofS[count] = k.getName();
+			count++;
+		}
+		Arrays.sort(listofS);
+		return listofS;
 	}
 
 	public void PrintNames() {

@@ -25,7 +25,7 @@ public class windowAnatomy extends JFrame implements ActionListener {
 	private JList list;
 	private JScrollPane scrollPane;
 	private JLabel lblPleaseSelectThe;
-	protected aGEMtaglist aGEM = new aGEMtaglist();
+	protected MDAToSTR MDA = new MDAToSTR();
 	protected ArrayList<String> selection = new ArrayList<String>();
 	public boolean wasperformed = false;
 
@@ -91,7 +91,7 @@ public class windowAnatomy extends JFrame implements ActionListener {
 		
 		list = new JList();
 		list.setModel(new AbstractListModel() {
-			String[] values = aGEM.strToString();
+			String[] values = MDA.strToString();
 			public int getSize() {
 				return values.length;
 			}
