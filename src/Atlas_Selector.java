@@ -13,6 +13,7 @@ import ij.process.StackProcessor;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 public class Atlas_Selector extends PlugInFrame{
@@ -91,7 +92,8 @@ public class Atlas_Selector extends PlugInFrame{
 				querystrhs.addAll(map.FindInverseDownstreamCorrespondences(struct.getName()));
 				querystrhs.add(map.FindInverseCorrespondence(struct.getName()));
 			}
-			querystr = (ArrayList<Structure>) querystrhs;
+			List<Structure> aux = new ArrayList<Structure>(querystrhs);
+			querystr = (ArrayList<Structure>) aux;
 			makeMask(querystr);
 		}
 	}
