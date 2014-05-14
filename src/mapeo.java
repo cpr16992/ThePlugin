@@ -91,8 +91,9 @@ public class mapeo {
 	}
 	
 	public ArrayList<Structure> FindInverseDownstreamCorrespondences(String aGEMname){
+		ArrayList<Structure> queriedStructures = new ArrayList<Structure>();
 		Structure StrOI = aGEMlist.search(aGEMname);
-		ArrayList<Structure> queriedStructures = aGEMlist.getAllDescendants(aGEMname);
+		queriedStructures = aGEMlist.getAllDescendants(aGEMname);
 		queriedStructures.add(StrOI);
 		ArrayList<Structure> downstreamCorrespondences = new ArrayList<Structure>();
 		for (Structure s:queriedStructures){

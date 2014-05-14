@@ -1,22 +1,18 @@
 import ij.IJ;
 import ij.ImagePlus;
-import ij.ImageStack;
 import ij.Prefs;
 import ij.gui.GenericDialog;
 import ij.io.Opener;
 import ij.plugin.Duplicator;
 import ij.plugin.ImageCalculator;
 import ij.plugin.frame.PlugInFrame;
-import ij.process.ImageProcessor;
-import ij.process.ShortProcessor;
-import ij.process.StackProcessor;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class Atlas_Selector extends PlugInFrame{
+public class aGEM_Atlas_Plugin extends PlugInFrame{
 	/**
 	 * 
 	 */
@@ -30,11 +26,12 @@ public class Atlas_Selector extends PlugInFrame{
 	private ArrayList<Gene> queryg = new ArrayList<Gene>();
 	private String path = "C:\\Users\\cporras\\Desktop\\Atlases\\Atlas LONI MDA\\Atlas LONI MDA\\Data";
 	private ImagePlus atlas;
+	private ArrayList<Gene> genesquery = new ArrayList<Gene>();
 
-	public Atlas_Selector() {
+	public aGEM_Atlas_Plugin() {
 		super("FrameDemo");
 	}
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "deprecation" })
 	public void run(String arg){
 		GenericDialog gd2 = new GenericDialog("Checkout selection");
 		String options[] = {"Anatomy", "Gene"};
@@ -68,7 +65,11 @@ public class Atlas_Selector extends PlugInFrame{
 				queryaGEM.addAll(ofInterest);
 			}
 			makeMask(querystr);
-
+			for (Structure str: queryaGEM){
+				genesquery.addAll(map.aGEMlist.searchgenesbystructure(str.getName()));
+			}
+			windowInformation widow2 = new windowInformation(genesquery);
+			widow2.show();
 		}
 		else if (result1.equals("Gene"))
 		{
@@ -79,7 +80,7 @@ public class Atlas_Selector extends PlugInFrame{
 			query = widow.getResults();
 			widow.dispose();
 			for (String str: query){
-				queryg.add(aGEM.searchgene(str));
+				queryg.addAll(aGEM.searchgene(str));
 			}
 			Opener opener = new Opener();  
 			atlas = opener.openTiff(path, "MAP2006_t2avg.tif");
@@ -95,6 +96,8 @@ public class Atlas_Selector extends PlugInFrame{
 			List<Structure> aux = new ArrayList<Structure>(querystrhs);
 			querystr = (ArrayList<Structure>) aux;
 			makeMask(querystr);
+			windowInformation widow2 = new windowInformation(queryg);
+			widow2.show();
 		}
 	}
 
@@ -134,6 +137,8 @@ public class Atlas_Selector extends PlugInFrame{
 		imp.hide();
 		atlas.hide();
 	}
+	
+	
 
 }
 

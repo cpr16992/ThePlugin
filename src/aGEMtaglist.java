@@ -63,7 +63,7 @@ public class aGEMtaglist {
 		}
 		return children;
 	}
-	
+
 	public String[] strToString(){
 		String[] listofS = new String[tagidentifiers.size()];
 		int count = 0;
@@ -74,7 +74,7 @@ public class aGEMtaglist {
 		Arrays.sort(listofS);
 		return listofS;
 	}
-	
+
 	public String[] geneToString(){
 		Set<String> genelist = new HashSet<String>();
 		for (Gene k: allgenes){
@@ -114,7 +114,7 @@ public class aGEMtaglist {
 		}	
 		return MGItags;
 	}
-	
+
 	private ArrayList<Gene> setGenes(ArrayList<Structure> tagidentifiers){
 		ArrayList<Gene> genes = new ArrayList<Gene>();
 		String query = new String();
@@ -144,7 +144,38 @@ public class aGEMtaglist {
 				newGene.setStructureName(rs.getString(9));
 				newGene.setStructureKey(rs.getString(10));
 				newGene.setEdinburghKey(rs.getString(11));
-				newGene.setStrength(rs.getString(15));
+				switch (rs.getString(15)){
+				case "-2":
+					newGene.setStrength("Not Applicable");
+					break;
+				case "-1":
+					newGene.setStrength("Not Specified");
+					break;
+				case "1": 
+					newGene.setStrength("Absent");
+					break;
+				case "2": 
+					newGene.setStrength("Present");
+					break;
+				case "3": 
+					newGene.setStrength("Ambiguous");
+					break;
+				case "4": 
+					newGene.setStrength("Trace");
+					break;
+				case "5": 
+					newGene.setStrength("Weak");
+					break;
+				case "6": 
+					newGene.setStrength("Moderate");
+					break;
+				case "7": 
+					newGene.setStrength("Strong");
+					break;
+				case "8": 
+					newGene.setStrength("Very Strong");
+					break;
+				}
 				genes.add(newGene);
 			}
 			conexion.close();
@@ -166,14 +197,14 @@ public class aGEMtaglist {
 		tag.addChildren(extractchildren(rs.getInt(1)));
 		return tag;
 	}
-	
+
 	public ArrayList<Structure> getGXDtags(){
 		return tagidentifiers;
 	}
 	public HashSet<Integer> getMGIidentifiers(){
 		return MGIidentifiers;
 	}
-	
+
 	public ArrayList<Gene> getGenes(){
 		return allgenes;
 	}	
@@ -198,7 +229,7 @@ public class aGEMtaglist {
 	}
 	public Structure search(String name){
 		for (Structure k : tagidentifiers){
-			if (k.getName().equalsIgnoreCase(name)){
+			if (k.getName().replaceAll(" ", "").equalsIgnoreCase(name.replaceAll(" ", ""))){
 				return k;
 			}
 		}
@@ -212,38 +243,49 @@ public class aGEMtaglist {
 		}
 		return null;
 	}
-	
 
-	 public ArrayList<Structure> findstructuresbygene(String name){
+
+	public ArrayList<Structure> findstructuresbygene(String name){
 		Set<Structure> hashset = new HashSet<Structure>();
 		for (Gene l: allgenes){
-			if (l.getName().equalsIgnoreCase(name)){
+			if (l.getName().replaceAll(" ", "").equalsIgnoreCase(name.replaceAll(" ", ""))){
 				hashset.add(this.search(l.getStructureName()));
 			}
 		}
 		List<Structure> resultstructures = new ArrayList<Structure>(hashset);
 		return (ArrayList<Structure>) resultstructures;
 	}
-	 
-	public Gene searchgene(String name){
+
+	public ArrayList<Gene> searchgene(String name){
+		ArrayList<Gene> genes = new ArrayList<Gene>();
 		for (Gene l: allgenes){
 			if (l.getName().equalsIgnoreCase(name)){
-				return l;
+				genes.add(l);
 			}
 		}
-		return null;
+		return genes;
 	}
-	
-	public void searchgenesbystructure(String name){
+
+	public ArrayList<Gene> searchgenesbystructure(String name){
+		ArrayList<Gene> result = new ArrayList<Gene>();
 		Structure where = search(name);
 		String StrID = where.getId();
 		for (Gene p: allgenes){
-			if (p.getStructureKey().equalsIgnoreCase(StrID)){
-				System.out.println(p.getName());
+			if (p.getStructureKey().equalsIgnoreCase(StrID) && !(p.getStrength().equals("Not Applicable")) && 
+					!(p.getStrength().equals("Not Specified")) && !(p.getStrength().equals("Absent"))){
+				result.add(p);
 			}
 		}
+		return result;
 	}
-	
+
+	public void showstructurequeryresult(String name){
+		ArrayList<Gene> result = searchgenesbystructure(name);
+		for (Gene k: result){
+			System.out.println(k.getName());
+		}
+	}
+
 	public ArrayList<Structure> getChildren(String fathername){
 		Structure father = search(fathername);
 		return (ArrayList<Structure>) father.getChildren();
